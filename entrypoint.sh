@@ -11,9 +11,10 @@ export PREFIX=${INPUT_ABUILD_PREFIX:-.}
 # Set version
 echo
 if [[ ! -z "${INPUT_ABUILD_PKG_VER}" ]]; then
+  PKG_VER=$(echo $INPUT_ABUILD_PKG_VER | rev | cut -d v -f 1 | rev)
   echo "Updating version"
-  echo  sed -i "s/pkgver=.*/pkgver=${INPUT_ABUILD_PKG_VER}/" ${PREFIX}/APKBUILD
-  [[ ! -z "${DRY_RUN}" ]] || sed -i "s/pkgver=.*/pkgver=${INPUT_ABUILD_PKG_VER}/" ${PREFIX}/APKBUILD
+  echo  sed -i "s/pkgver=.*/pkgver=${PKG_VER}/" ${PREFIX}/APKBUILD
+  [[ ! -z "${DRY_RUN}" ]] || sed -i "s/pkgver=.*/pkgver=${PKG_VER}/" ${PREFIX}/APKBUILD
 else
   echo "Skipping version"
 fi
