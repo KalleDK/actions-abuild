@@ -35,6 +35,7 @@ echo "::group::Keys"
 
 # Set signing keys
 if [[ ! -z "${INPUT_ABUILD_KEY_NAME}" ]]; then
+    echo "Using environment keys"
     export PACKAGER_PRIVKEY="/root/${INPUT_ABUILD_KEY_NAME}.rsa"
     printf "${INPUT_ABUILD_KEY}" > "${PACKAGER_PRIVKEY}"
 
@@ -43,6 +44,7 @@ if [[ ! -z "${INPUT_ABUILD_KEY_NAME}" ]]; then
     
     cp "${PACKAGER_PUBKEY}" /etc/apk/keys/
 else
+    echo "Using generated keys"
     abuild-keygen -a -i -n
 fi
 
