@@ -35,6 +35,9 @@ inputs:
   abuild_pkg_rel:
     description: 'Alpine package release number'
     required: false
+  abuild_repo_url:
+    description: 'Url for repo'
+    required: false
 
 runs:
   using: 'docker'

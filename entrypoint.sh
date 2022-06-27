@@ -10,7 +10,7 @@ export REPODEST="${GITHUB_WORKSPACE}/packages"
 export SUBREPO_BUILD="${REPODEST}/workspace"
 export REPONAME=${INPUT_ABUILD_REPO_NAME}
 export SUBREPO="${REPODEST}/${REPONAME}"
-export BASE_URL=${BASE_URL:-"https://kalledk.github.io/alpinerepo"}
+export BASE_URL=${INPUT_ABUILD_REPO_URL}
 
 export PREFIX=${INPUT_ABUILD_PREFIX:-.}
 export GIT_COMMIT=${INPUT_ABUILD_PKG_COMMIT}
@@ -64,8 +64,11 @@ find ${SUBREPO} -name "*.apk" | xargs apk verify
 
 echo "::endgroup::"
 
+
 echo "::group::GenerateIndex"
 
+if [[ ! -z "${INPUT_ABUILD_KEY_NAME}" ]]; then
+echo "generating index"
 
 cat << EOF > ${SUBREPO}/index.md
 # ACME DNS Proxy
@@ -78,5 +81,10 @@ wget -O "/etc/apk/keys/${KEY_NAME}" "${BASE_URL}/${REPONAME}/${KEY_NAME}"
 echo "${BASE_URL}/${REPONAME}" >> /etc/apk/repositories
 \`\`\` 
 EOF
+
+cat ${SUBREPO}/index.md
+else
+echo "skipping due to missing url"
+fi
 
 echo "::endgroup::"
