@@ -5,6 +5,8 @@ description: 'Build Alpine Package'
 outputs:
   repo_path:
     description: "Path with repo"
+  key_name:
+    description: "Name of signing key"
 inputs:
   abuild_prefix:
     description: 'Folder APKBUILD is in'

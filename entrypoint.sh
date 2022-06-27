@@ -13,7 +13,7 @@ export SUBREPO="${REPODEST}/${REPONAME}"
 
 export PREFIX=${INPUT_ABUILD_PREFIX:-.}
 export GIT_COMMIT=${INPUT_ABUILD_PKG_COMMIT}
-export PKG_VER=${INPUT_ABUILD_PKG_REL}
+export PKG_VER=${INPUT_ABUILD_PKG_VER}
 export ABUILD_DIR=~/.abuild
 
 # Set release
@@ -43,6 +43,7 @@ else
     export PACKAGER_PUBKEY="${ABUILD_DIR}/$(ls -1rt ${ABUILD_DIR} | grep \.rsa\.pub | tail -n 1 | tail -n 1)"
 fi
 cp ${PACKAGER_PUBKEY} ${SUBREPO_BUILD}/
+echo "::set-output name=key_name::$(basename -s .rsa.pub ${PACKAGER_PUBKEY})"
 
 echo "::endgroup::"
 echo "::group::Build"
