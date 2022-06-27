@@ -4,7 +4,8 @@ set -e
 
 echo "::group::Setup"
 
-export REPODEST="${GITHUB_WORKSPACE}/packages/workspace"
+export REPOBASE="${GITHUB_WORKSPACE}/packages"
+export REPODEST="${REPOBASE}/workspace"
 export SRCDEST="${GITHUB_WORKSPACE}/cache/distfiles"
 export PACKAGER="${INPUT_ABUILD_PACKAGER}"
 
@@ -51,7 +52,7 @@ abuild -F checksum
 abuild -F -r -D ${REPONAME}
 cd ${GITHUB_WORKSPACE}
 
-cd ~/packages
+cd ${REPOBASE}
 cp -r workspace ${REPONAME}
 tar -czvf repo.tar.gz ${REPONAME}
 cd ${GITHUB_WORKSPACE}
