@@ -4,10 +4,10 @@ set -e
 
 echo "::group::Setup"
 
-export REPOBASE="${GITHUB_WORKSPACE}/packages"
-export REPODEST="${REPOBASE}/workspace"
-export SRCDEST="${GITHUB_WORKSPACE}/cache/distfiles"
 export PACKAGER="${INPUT_ABUILD_PACKAGER}"
+export SRCDEST="${GITHUB_WORKSPACE}/cache/distfiles"
+export REPODEST="${GITHUB_WORKSPACE}/packages"
+export SUBREPO="${REPODEST}/workspace"
 
 export PREFIX=${INPUT_ABUILD_PREFIX:-.}
 export GIT_COMMIT=${INPUT_ABUILD_PKG_COMMIT}
@@ -19,7 +19,7 @@ export ABUILD_DIR=~/.abuild
 if [[ ! -z "${INPUT_ABUILD_PKG_REL}" ]]; then
   export PKG_REL=${INPUT_ABUILD_PKG_REL}
 fi
-mkdir -p ${REPODEST}
+mkdir -p ${SUBREPO}
 mkdir -p ${ABUILD_DIR}
 echo ""
 
@@ -41,7 +41,7 @@ else
     abuild-keygen -a -i -n
     export PACKAGER_PUBKEY="${ABUILD_DIR}/$(ls -1rt ${ABUILD_DIR} | grep \.rsa\.pub | tail -n 1 | tail -n 1)"
 fi
-cp ${PACKAGER_PUBKEY} ${REPODEST}/
+cp ${PACKAGER_PUBKEY} ${SUBREPO}/
 echo "::set-output name=packages_key::./packages/workspace/$(basename ${PACKAGER_PUBKEY})"
 
 echo "::endgroup::"
@@ -49,18 +49,13 @@ echo "::group::Build"
 
 cd ${PREFIX}
 abuild -F checksum
-abuild -F -r -D ${REPONAME}
-cd ${GITHUB_WORKSPACE}
-
-cd ${REPOBASE}
-cp -r workspace ${REPONAME}
-tar -czvf repo.tar.gz ${REPONAME}
+abuild -F -r -P ${REPODEST} -s ${SRCDEST} -D ${REPONAME}
 cd ${GITHUB_WORKSPACE}
 
 echo "::endgroup::"
 echo "::group::Verify"
 
-find $REPODEST -name "*.apk" | xargs apk verify
+find ${SUBREPO} -name "*.apk" | xargs apk verify
 find . -name "*.apk" | head -1 | xargs dirname | xargs -I %  echo "::set-output name=packages_path::%"
 
 echo "::endgroup::"
