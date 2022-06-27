@@ -3,8 +3,8 @@ name: 'Alpine Build APK'
 author: 'Kalle M. Aagaard <alpine@k-moeller.dk>'
 description: 'Build Alpine Package'
 outputs:
-  packages_path:
-    description: "Path with packages"
+  repo_path:
+    description: "Path with repo"
 inputs:
   abuild_prefix:
     description: 'Folder APKBUILD is in'

@@ -51,7 +51,7 @@ cd ${PREFIX}
 abuild -F checksum
 abuild -F -r -P ${REPODEST} -s ${SRCDEST} -D ${REPONAME}
 mv ${SUBREPO_BUILD} ${SUBREPO}
-echo "::set-output name=repo_path::./packages/${REPONAME}"
+echo "::set-output name=repo_path::./packages"
 cd ${GITHUB_WORKSPACE}
 
 echo "::endgroup::"
