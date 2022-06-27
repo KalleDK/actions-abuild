@@ -7,6 +7,7 @@ export SRCDEST="${GITHUB_WORKSPACE}/cache/distfiles"
 export PACKAGER="${INPUT_ABUILD_PACKAGER}"
 
 export PREFIX=${INPUT_ABUILD_PREFIX:-.}
+export COMMIT=${INPUT_ABUILD_COMMIT}
 
 # Set version
 echo
