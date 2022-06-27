@@ -8,26 +8,11 @@ export PACKAGER="${INPUT_ABUILD_PACKAGER}"
 
 export PREFIX=${INPUT_ABUILD_PREFIX:-.}
 export GIT_COMMIT=${INPUT_ABUILD_PKG_COMMIT}
-
-# Set version
-echo
-if [[ ! -z "${INPUT_ABUILD_PKG_VER}" ]]; then
-  PKG_VER=$(echo $INPUT_ABUILD_PKG_VER | rev | cut -d v -f 1 | rev)
-  echo "Updating version"
-  echo  sed -i "s/pkgver=.*/pkgver=${PKG_VER}/" ${PREFIX}/APKBUILD
-  [[ ! -z "${DRY_RUN}" ]] || sed -i "s/pkgver=.*/pkgver=${PKG_VER}/" ${PREFIX}/APKBUILD
-else
-  echo "Skipping version"
-fi
-echo ""
+export PKG_VER=${INPUT_ABUILD_PKG_REL}
 
 # Set release
 if [[ ! -z "${INPUT_ABUILD_PKG_REL}" ]]; then
-  echo "Updating release"
-  echo  sed -i "s/pkgrel=.*/pkgrel=${INPUT_ABUILD_PKG_REL}/" ${PREFIX}/APKBUILD
-  [[ ! -z "${DRY_RUN}" ]] || sed -i "s/pkgrel=.*/pkgrel=${INPUT_ABUILD_PKG_REL}/" ${PREFIX}/APKBUILD
-else
-  echo "Skipping release"
+  export PKG_REL=${INPUT_ABUILD_PKG_REL}
 fi
 echo ""
 
