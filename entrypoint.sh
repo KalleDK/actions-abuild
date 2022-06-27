@@ -56,4 +56,7 @@ echo "::group::Verify"
 
 find $REPODEST -name "*.apk" | xargs apk verify
 find . -name "*.apk" | head -1 | xargs dirname | xargs -I %  echo "::set-output name=packages_path::%"
+cd ~/packages
+cp -r workspace ${REPONAME}
+tar -czvf repo.tar.gz ${REPONAME}
 echo "::endgroup::"
