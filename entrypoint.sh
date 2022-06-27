@@ -10,6 +10,7 @@ export REPODEST="${GITHUB_WORKSPACE}/packages"
 export SUBREPO_BUILD="${REPODEST}/workspace"
 export REPONAME=${INPUT_ABUILD_REPO_NAME}
 export SUBREPO="${REPODEST}/${REPONAME}"
+export BASE_URL=${BASE_URL:-"https://kalledk.github.io/alpinerepo"}
 
 export PREFIX=${INPUT_ABUILD_PREFIX:-.}
 export GIT_COMMIT=${INPUT_ABUILD_PKG_COMMIT}
@@ -43,7 +44,8 @@ else
     export PACKAGER_PUBKEY="${ABUILD_DIR}/$(ls -1rt ${ABUILD_DIR} | grep \.rsa\.pub | tail -n 1 | tail -n 1)"
 fi
 cp ${PACKAGER_PUBKEY} ${SUBREPO_BUILD}/
-echo "::set-output name=key_name::$(basename -s .rsa.pub ${PACKAGER_PUBKEY})"
+export KEY_NAME=$(basename -s .rsa.pub ${PACKAGER_PUBKEY})
+echo "::set-output name=key_name::${KEY_NAME}"
 
 echo "::endgroup::"
 echo "::group::Build"
@@ -59,5 +61,22 @@ echo "::endgroup::"
 echo "::group::Verify"
 
 find ${SUBREPO} -name "*.apk" | xargs apk verify
+
+echo "::endgroup::"
+
+echo "::group::GenerateIndex"
+
+
+cat << EOF > ${SUBREPO}/index.md
+# ACME DNS Proxy
+
+\`\`\`bash
+# Install key
+wget -O "/etc/apk/keys/${KEY_NAME}" "${BASE_URL}/${REPONAME}/${KEY_NAME}"
+
+# Install repo
+echo "${BASE_URL}/${REPONAME}" >> /etc/apk/repositories
+\`\`\` 
+EOF
 
 echo "::endgroup::"
