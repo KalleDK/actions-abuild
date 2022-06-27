@@ -21,8 +21,11 @@ inputs:
   abuild_key_name:
     description: 'Name of RSA Key to sign the package'
     required: false
+  abuild_commit:
+    description: 'Commit to build against'
+    required: true
   abuild_pkg_ver:
-    desciption: 'The version of the software being packaged'
+    description: 'The version of the software being packaged'
     required: false
   abuild_pkg_rel:
     description: 'Alpine package release number'
