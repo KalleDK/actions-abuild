@@ -21,7 +21,7 @@ inputs:
   abuild_key_name:
     description: 'Name of RSA Key to sign the package'
     required: false
-  abuild_commit:
+  abuild_pkg_commit:
     description: 'Commit to build against'
     required: true
   abuild_pkg_ver:
