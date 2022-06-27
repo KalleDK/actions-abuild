@@ -8,12 +8,12 @@ export PACKAGER="${INPUT_ABUILD_PACKAGER}"
 export SRCDEST="${GITHUB_WORKSPACE}/cache/distfiles"
 export REPODEST="${GITHUB_WORKSPACE}/packages"
 export SUBREPO_BUILD="${REPODEST}/workspace"
-export SUBREPO="${REPODEST}/acmednsproxy"
+export REPONAME=${INPUT_ABUILD_REPO_NAME}
+export SUBREPO="${REPODEST}/${REPONAME}"
 
 export PREFIX=${INPUT_ABUILD_PREFIX:-.}
 export GIT_COMMIT=${INPUT_ABUILD_PKG_COMMIT}
 export PKG_VER=${INPUT_ABUILD_PKG_REL}
-export REPONAME=${INPUT_ABUILD_REPO_NAME}
 export ABUILD_DIR=~/.abuild
 
 # Set release
@@ -51,6 +51,7 @@ cd ${PREFIX}
 abuild -F checksum
 abuild -F -r -P ${REPODEST} -s ${SRCDEST} -D ${REPONAME}
 mv ${SUBREPO_BUILD} ${SUBREPO}
+echo "::set-output name=repo_path::./packages/${REPONAME}"
 cd ${GITHUB_WORKSPACE}
 
 echo "::endgroup::"
