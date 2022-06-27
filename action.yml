@@ -12,6 +12,9 @@ inputs:
   abuild_packager:
     description: 'Who is the packager'
     required: true
+  abuild_repo_name:
+    description: 'Repo name'
+    required: true
   abuild_key:
     description: 'RSA Key to sign the package'
     required: false

@@ -9,6 +9,7 @@ export PACKAGER="${INPUT_ABUILD_PACKAGER}"
 export PREFIX=${INPUT_ABUILD_PREFIX:-.}
 export GIT_COMMIT=${INPUT_ABUILD_PKG_COMMIT}
 export PKG_VER=${INPUT_ABUILD_PKG_REL}
+export REPONAME=${INPUT_ABUILD_REPO_NAME}
 
 # Set release
 if [[ ! -z "${INPUT_ABUILD_PKG_REL}" ]]; then
@@ -39,7 +40,7 @@ echo "::group::Build"
 
 cd ${PREFIX}
 abuild -F checksum
-abuild -F -r
+abuild -F -r -D ${REPONAME}
 cd ${GITHUB_WORKSPACE}
 
 echo "::endgroup::"
