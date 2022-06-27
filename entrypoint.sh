@@ -4,7 +4,7 @@ set -e
 
 echo "::group::Setup"
 
-export REPODEST="${GITHUB_WORKSPACE}/packages"
+export REPODEST="${GITHUB_WORKSPACE}/packages/workspace"
 export SRCDEST="${GITHUB_WORKSPACE}/cache/distfiles"
 export PACKAGER="${INPUT_ABUILD_PACKAGER}"
 
@@ -41,7 +41,7 @@ else
     export PACKAGER_PUBKEY="${ABUILD_DIR}/$(ls -1rt ${ABUILD_DIR} | grep \.rsa\.pub | tail -n 1 | tail -n 1)"
 fi
 cp ${PACKAGER_PUBKEY} ${REPODEST}/
-echo "::set-output name=packages_key::./packages/$(basename ${PACKAGER_PUBKEY})"
+echo "::set-output name=packages_key::./packages/workspace/$(basename ${PACKAGER_PUBKEY})"
 
 echo "::endgroup::"
 echo "::group::Build"
