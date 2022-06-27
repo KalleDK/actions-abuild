@@ -75,7 +75,7 @@ cat << EOF > ${SUBREPO}/index.md
 
 \`\`\`bash
 # Install key
-wget -O "/etc/apk/keys/${KEY_NAME}" "${BASE_URL}/${REPONAME}/${KEY_NAME}"
+wget -O "/etc/apk/keys/${KEY_NAME}.rsa.pub" "${BASE_URL}/${REPONAME}/${KEY_NAME}.rsa.pub"
 
 # Install repo
 echo "${BASE_URL}/${REPONAME}" >> /etc/apk/repositories
